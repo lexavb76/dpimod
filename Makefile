@@ -4,7 +4,7 @@ TARGET := $(MODNAME).ko
 PWD := $(CURDIR)
 SRCDIR := $(PWD)/src
 MAKESRC := $(SRCDIR)/Makefile
-
+src_m = $(SRCDIR)/$(MODNAME).c
 
 #The directory that contains the kernel sources or relevant build
 KDIR := /lib/modules/$$(KVERSION)/build
@@ -47,7 +47,7 @@ SSH := ssh
 endif
 endif
 
-.PHONY: all modules clean _prep_makesrc dkms deploy install remove deb run stop
+.PHONY: all modules clean dkms deploy install remove deb run stop
 help:
 	@echo Targets for DKMS building: deploy install remove deb run stop
 
@@ -56,7 +56,7 @@ all: modules clean
 	@echo Run \'make modules\' to build in $(SRCDIR)
 	@echo Run \'make clean\' to clean $(SRCDIR)
 
-modules clean: _prep_makesrc
+modules clean: $(MAKESRC)
 	make -C $(SRCDIR) -f $(MAKESRC) $@
 #	@if [ "$@" = "clean" ]; then \
 #		rm $(MAKESRC); \
@@ -64,9 +64,9 @@ modules clean: _prep_makesrc
 #		(cp $(SRCDIR)/$(TARGET) $(PWD) || echo $(TARGET) does not exist); \
 #	fi
 
-_prep_makesrc: $(MAKESRC)
-
-$(MAKESRC):
+$(MAKESRC): $(src_m)
+	@echo Sources were changed. Remove the module...
+	$(MAKE) remove
 	echo '.PHONY: modules clean' > $(MAKESRC)
 	echo '"KVERSION ?= $$(shell uname -r)" # For currently working kernel' >> $(MAKESRC)
 #	echo KVERSION ?= 5.15.0-70-generic >> $(MAKESRC)
@@ -80,17 +80,16 @@ deb-pkg: $(INST_MODPATH)
 $(INST_MODPATH):
 	mkdir -p $(INST_MODPATH)
 
-dkms: $(MAKESRC) $(DKMS_PATH)
-#dkms: modules clean $(DKMS_PATH)
+dkms: $(DKMS_PATH) $(MAKESRC)
+
 $(DKMS_PATH):
 	mkdir -p $(DKMS_PATH)
-	cp -r $(SRCDIR)/* $(DKMS_PATH)
+	rsync -a $(SRCDIR)/* $(DKMS_PATH)
 	echo PACKAGE_NAME="$(MODNAME)" > $(DKMS_CONF)
 	echo PACKAGE_VERSION="$(MODVERSION)" >> $(DKMS_CONF)
 	echo CLEAN='"make clean KVERSION=$$kernelver"' >> $(DKMS_CONF)
 	echo MAKE[0]='"make modules --debug KVERSION=$$kernelver"' >> $(DKMS_CONF)
 	echo BUILT_MODULE_NAME[0]="$(MODNAME)" >> $(DKMS_CONF)
-#	echo BUILT_MODULE_LOCATION[0]='"/.."' >> $(DKMS_CONF)
 	echo DEST_MODULE_LOCATION[0]="/updates" >> $(DKMS_CONF)
 	echo AUTOINSTALL="yes" >> $(DKMS_CONF)
 
@@ -101,7 +100,8 @@ deploy: dkms
 
 install: deploy
 	$(SSH) $(D) sudo dkms add -m $(MODNAME) -v $(MODVERSION) || :
-	$(SSH) $(D) sudo dkms build -j 1 --verbose -m $(MODNAME) -v $(MODVERSION)
+	$(SSH) $(D) sudo dkms build -j 1 --verbose -m $(MODNAME) -v $(MODVERSION) || \
+        $(SSH) $(D) sudo dkms build -j 1 --verbose -m $(MODNAME) -v $(MODVERSION) #Strange bug in dkms (double build is needed)
 	$(SSH) $(D) sudo dkms install -m $(MODNAME) -v $(MODVERSION)
 	$(SSH) $(D) sudo dkms status
 
@@ -116,11 +116,11 @@ deb: install deb-pkg
 
 run: install
 	$(SSH) $(D) sudo modprobe $(MODNAME)
-	$(SSH) $(D) sudo dmesg
+	$(SSH) $(D) sudo dmesg --kernel
 
 stop:
 	$(SSH) $(D) sudo rmmod $(MODNAME) || :
-	$(SSH) $(D) sudo dmesg
+	$(SSH) $(D) sudo dmesg --kernel
 
 
 # On remote side:
