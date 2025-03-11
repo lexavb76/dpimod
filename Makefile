@@ -66,7 +66,7 @@ modules clean: $(MAKESRC)
 
 $(MAKESRC): $(src_m)
 	@echo Sources were changed. Remove the module...
-	$(MAKE) remove
+	$(MAKE) cleanall
 	echo '.PHONY: modules clean' > $(MAKESRC)
 	echo '"KVERSION ?= $$(shell uname -r)" # For currently working kernel' >> $(MAKESRC)
 #	echo KVERSION ?= 5.15.0-70-generic >> $(MAKESRC)
@@ -82,7 +82,7 @@ $(INST_MODPATH):
 
 dkms: $(DKMS_PATH) $(MAKESRC)
 
-$(DKMS_PATH):
+$(DKMS_PATH): $(MAKESRC)
 	mkdir -p $(DKMS_PATH)
 	rsync -a $(SRCDIR)/* $(DKMS_PATH)
 	echo PACKAGE_NAME="$(MODNAME)" > $(DKMS_CONF)
@@ -136,8 +136,7 @@ stop:
 #	lsmod | grep dpi
 #	journalctl --since "1 hour ago" | grep kernel
 
-cleanall:
-#cleanall: clean
+cleanall: remove
 	rm -rf $(DKMSDIR)
 	rm -rf $(DEB_ROOTDIR)
 	rm $(MAKESRC)
