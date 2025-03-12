@@ -15,9 +15,11 @@ char msg_start[] = "[dpimod started] Drop IP packets with options set (RFC 1108)
 
 char msg_finish[] = "[dpimod finished]";
 
-unsigned int dpi_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *state);
+unsigned int dpi_hook_handler(void *priv, struct sk_buff *skb, const struct nf_hook_state *state);
 
-struct nf_hook_ops dpi_opts = {.hook = dpi_hook,
+//.hooknum = NF_INET_PRE_ROUTING: for received packages.
+//.hooknum = NF_INET_LOCAL_OUT: for sent packages.
+struct nf_hook_ops dpi_opts = {.hook = dpi_hook_handler,
                           .pf = NFPROTO_INET,
                           .hook_ops_type = NF_HOOK_OP_NF_TABLES,
                           .hooknum = NF_INET_PRE_ROUTING,
@@ -27,16 +29,20 @@ int init_module(void)
 {
     pr_info("%s\n Action: %d\n", msg_start, action);
     nf_register_net_hook(&init_net, &dpi_opts); // init_net: default network namespace
+    dpi_opts.hooknum = NF_INET_LOCAL_OUT;
+    nf_register_net_hook(&init_net, &dpi_opts); // The same for output packets
     return 0;
 }
 
 void cleanup_module(void)
 {
     nf_unregister_net_hook(&init_net, &dpi_opts);
+    dpi_opts.hooknum = NF_INET_PRE_ROUTING; // Unregister in revers order (just for convinience)
+    nf_unregister_net_hook(&init_net, &dpi_opts);
     pr_alert("%s Good buy, world!\n", msg_finish);
 }
 
-unsigned int dpi_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *state)
+unsigned int dpi_hook_handler(void *priv, struct sk_buff *skb, const struct nf_hook_state *state)
 {
     pr_info("[dpimod] RCVD IP packet");
     return action;
