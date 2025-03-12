@@ -137,6 +137,6 @@ stop:
 #	journalctl --since "1 hour ago" | grep kernel
 
 cleanall: remove
-	rm -rf $(DKMSDIR)
-	rm -rf $(DEB_ROOTDIR)
-	rm $(MAKESRC)
+	rm -rf $(DKMSDIR) || :
+	rm -rf $(DEB_ROOTDIR) || :
+	rm $(MAKESRC) || :
