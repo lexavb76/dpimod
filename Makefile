@@ -34,6 +34,22 @@ TMP := /tmp
 DEST_TMP := $(TMP)
 SSH :=
 
+# Just to escape backslashes: ))
+BL :=
+SLASH := \$(BL)
+IPOPTS := $(SLASH)\$\
+\1$(SLASH)\$\
+\1$(SLASH)\$\
+\130$(SLASH)\$\
+\1
+#\1\1\130\1
+HMSG := " sudo tcpdump host 192.168.122.64 -nv -i virbr0 and icmp \# Listen ICMP traffic (example)\n\
+sudo dmesg -w \# Follow kernel log on remote host\n\
+sudo nmap -n -sO -p1 -PE --max-retries 4 --packet-trace --ip-options '$(IPOPTS)' 192.168.122.64 \# Generate ICMP request with SEC ip_option set (Drop)\n\
+make D=192.168.122.64 run  \# Build module and run on remote host (example)\n\
+make D=192.168.122.64 stop \# Stop module on remote host (example)\n\
+"
+
 # Dirty HACK for Debug purpose:
 D := 192.168.122.64
 
@@ -50,6 +66,7 @@ endif
 .PHONY: all modules clean dkms deploy install remove deb run stop
 help:
 	@echo Targets for DKMS building: deploy install remove deb run stop
+	@echo $(HMSG)
 
 all: modules clean
 	@echo Find \'$(TARGET)\' in your work DIR
