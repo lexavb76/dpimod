@@ -45,13 +45,13 @@ IPOPTS := $(SLASH)\$\
 #\1\1\130\1
 HMSG := " sudo tcpdump host 192.168.122.64 -nv -i virbr0 and icmp \# Listen ICMP traffic (example)\n\
 sudo dmesg -w \# Follow kernel log on remote host\n\
-sudo nmap -n -sO -p1 -PE --max-retries 4 --packet-trace --ip-options '$(IPOPTS)' 192.168.122.64 \# Generate ICMP request with SEC ip_option set (Drop)\n\
+sudo nmap -n -sO -p1 -Pn --max-retries 4 --packet-trace --ip-options '$(IPOPTS)' 192.168.122.64 \# Generate ICMP request with SEC ip_option set (Drop)\n\
 make D=192.168.122.64 run  \# Build module and run on remote host (example)\n\
 make D=192.168.122.64 stop \# Stop module on remote host (example)\n\
 "
 
 # Dirty HACK for Debug purpose:
-D := 192.168.122.64
+# D := 192.168.122.64
 
 ifdef D
 ifeq "$(origin D)" "environment"
@@ -85,8 +85,7 @@ $(MAKESRC): $(src_m)
 	@echo Sources were changed. Remove the module...
 	$(MAKE) cleanall
 	echo '.PHONY: modules clean' > $(MAKESRC)
-	echo '"KVERSION ?= $$(shell uname -r)" # For currently working kernel' >> $(MAKESRC)
-#	echo KVERSION ?= 5.15.0-70-generic >> $(MAKESRC)
+	echo 'KVERSION ?= $$(shell uname -r) # For currently working kernel' >> $(MAKESRC)
 	echo  obj-m += $(MODNAME).o >> $(MAKESRC)
 	echo modules: >> $(MAKESRC)
 	echo '	make -C $(KDIR) M=$(DEST_DKMS_PATH) modules' >> $(MAKESRC)
