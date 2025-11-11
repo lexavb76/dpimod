@@ -1,0 +1,98 @@
+    1  apt-get install dkms
+    2  apt-get update
+    3  apt-get install build-essential
+    4  mke
+    5  make
+    6  apt-get install rsync
+    7  modprobe dpimod-dkms
+    8  cd /usr/src/dpimod-0.0.1/
+    9  insmod dpimod
+   10  insmod dpimod.ko
+   11  dmesg -w
+   12  rmmod dpimod
+   13  dmesg -w
+   14  modprobe dpimod
+   15  find /lib/modules/6.1.141-1-generic/ -name 'dpimod*'
+   16  dkms --help
+   17  dkms status
+   18  dkms install -m dpimod
+   19  dkms install -m dpimod -v 0.0.1
+   20  modprobe dpimod
+   21  dmesg -w
+   22  rmmod dpimod
+   23  dmesg -w
+   24  dpkg --purge dpimod
+   25  dpkg --purge dpimod-dkms
+   26  dkms status
+   27  dpkg -i /home/astra/dpimod-dkms_0.0.1_amd64.deb 
+   28  dkms status
+   29  dpkg --purge dpimod-dkms
+   30  apt-get install /home/astra/dpimod-dkms_0.0.1_amd64.deb 
+   31  modprobe dpimod
+   32  dmesg -w
+   33  dkms status
+   34  apt-cache dpimod
+   35  apt-cache show dpimod
+   36  apt-cache show dpimod-dkms
+   37  apt-get purge dpimod-dkms
+   38  dkms status
+   39  apt-get install /home/astra/dpimod-dkms_0.0.1_amd64.deb 
+   40  dkms status
+   41  apt-get install /home/astra/dpimod-dkms_0.0.1_amd64.deb 
+   42  dkms status
+   43  # /home/astra/dpimod-dkms_0.0.1_amd64.deb 
+   44  cd /tmp
+   45  dpkg --unpack /home/astra/dpimod-dkms_0.0.1_amd64.deb 
+   46  ls -lrt
+   47  apt-get purge dpimod-dkms
+   48  apt-get install deb-pkg.deb 
+   49  ls -lrt
+   50  apt-get install deb-pkg.deb
+   51  mv deb-pkg.deb dpimod-dkms_0.0.1_source.deb
+   52  apt-get install dpimod-dkms_0.0.1_source.deb 
+   53  apt-get install ./dpimod-dkms_0.0.1_source.deb 
+   54  rm dpimod-dkms_0.0.1_source.deb 
+   55  rm deb-pkg.deb 
+   56  mv deb-pkg.deb dpimod-dkms_0.0.1_all.deb
+   57  apt-get install ./dpimod-dkms_0.0.1_all.deb 
+   58  dkms status
+   59  dkms add -m dpimod-dkms -v 1.0.0
+   60  dkms add -m dpimod -v 1.0.0
+   61  ll
+   62  ls -lrt
+   63  ls -al /usr/src/dpimod-0.0.1/
+   64  dkms add -m dpimod -v 0.0.1
+   65  dkms status
+   66  dkms build -m dpimod -v 0.0.1
+   67  dkms status
+   68  dkms build -m dpimod -v 0.0.1
+   69  dkms status
+   70  dkms install -m dpimod -v 0.0.1
+   71  dkms status
+   72  modprobe dpimod
+   73  lsmod | grep dpi
+   74  dmesg -w
+   75  rmmod dpimod
+   76  dmesg -w
+   77  apt-get purge dkms
+   78  dkms status
+   79  apt-get install ./dpimod-dkms_0.0.1_all.deb 
+   80  dkms status
+   81  apt-get purge dpimod
+   82  apt-get purge dpimod-dkms
+   83  dkms status
+   84  dkms status
+   85  apt-get install ./dpimod-dkms_0.0.1_all.deb 
+   86  dkms status
+   87  modprobe dpimod
+   88  rmmod dpimod
+   89  dkms status
+   90  dkms remove dpimod
+   91  dkms remove -m dpimod -v 0.0.1
+   92  dkms status
+   93  apt-get purge dpimod-dkms
+   94  dkms status
+   95  apt-get install ./dpimod-dkms_0.0.1_all.deb 
+   96  dkms status
+   97  apt-get purge dpimod-dkms
+   98  history > /tmp/hist.astra.root

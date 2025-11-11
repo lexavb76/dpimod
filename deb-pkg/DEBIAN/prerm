@@ -1,0 +1,6 @@
+#!/bin/sh
+
+MODNAME=dpimod
+MODVERSION=0.0.1
+
+sudo dkms remove --verbose -m $MODNAME -v $MODVERSION --all || :

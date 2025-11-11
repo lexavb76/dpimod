@@ -1,0 +1,87 @@
+    1  whoami 
+    2  groups
+    3  umame -a
+    4  cat /etc/astra/build_version 
+    5  sudo -i
+    6  ll
+    7  ls
+    8  sudo apt-get install dpimod-dkms_0.0.1_amd64.deb 
+    9  sudo dpkg --install dpimod-dkms_0.0.1_amd64.deb 
+   10  sudo apt-cache show dpimod-dkms_0.0.1_amd64.deb 
+   11  sudo dpkg --list dpimod-dkms_0.0.1_amd64.deb 
+   12  sudo dpkg --list dpimod-dkms_0.0.1
+   13  sudo dpkg --list 'dpimod*'
+   14  sudo dpkg --purge dpimod-dkms_0.0.1_amd64.deb 
+   15  sudo dpkg --purge dpimod-dkms
+   16  sudo apt-get install linux-headers
+   17  uname -r
+   18  echo sudo apt-get install linux-headers-$(uname -r)
+   19  sudo apt-get install linux-headers-$(uname -r)
+   20  sudo dpkg --install dpimod-dkms_0.0.1_amd64.deb 
+   21  sudo dpkg --purge dpimod-dkms
+   22  sudo rm -rf /usr/src/dpimod-0.0.1/
+   23  ls
+   24  cd dpimod-0.0.1/
+   25  ls
+   26  make
+   27  sudo make modules
+   28  ls -l /lib/modules
+   29  ls -l /lib/modules/6.1.141-1-generic/
+   30  vim Makefile 
+   31  sudo make modules
+   32  pwd
+   33  vim Makefile 
+   34  sudo make modules
+   35  strip -h
+   36  uname -r
+   37  echo $(uname -r)_alex
+   38  echo $(uname -r)/alex
+   39  sudo make modules
+   40  cat Makefile 
+   41  vim Makefile 
+   42  sudo make modules
+   43  vim Makefile 
+   44  sudo make modules
+   45  vim Makefile 
+   46  sudo make modules
+   47  vim Makefile 
+   48  sudo make modules
+   49  vim Makefile 
+   50  sudo make modules
+   51  vim Makefile 
+   52  sudo make modules
+   53  ls -al
+   54  vim Makefile 
+   55  dmesg -w
+   56* 
+   57  cd ..
+   58  ls -al
+   59  sudo dpkg -i dpimod-dkms_0.0.1_amd64.deb 
+   60  cd /var/lib/dkms/dpimod/0.0.1/build
+   61  ls
+   62  vim make.log 
+   63  ls /usr/src/dpimod-0.0.1/
+   64  cat /usr/src/dpimod-0.0.1/Makefile 
+   65  dpkg --list 'dpi*'
+   66  sudo dpkg --purge dpimod-dkms
+   67  sudo dpkg -i dpimod-dkms_0.0.1_amd64.deb 
+   68  sudo dpkg -i ~/dpimod-dkms_0.0.1_amd64.deb 
+   69  sudo dpkg --list dpimod-dkms
+   70  sudo insmod
+   71  sudo -i
+   72  ls -l
+   73  cd /usr/share/dpimod-dkms/
+   74  ls -al
+   75  ls -al postinst 
+   76  cat postinst 
+   77  cd /var/lib/dkms/dpimod/0.0.1/build
+   78  sudo dpkg -i ~/dpimod-dkms_0.0.1_amd64.debs
+   79  sudo dpkg -i ~/dpimod-dkms_0.0.1_amd64.deb
+   80  ls -l /var/lib/dkms/dpimod/0.0.1/source
+   81  ls -l /var/lib/dkms/dpimod/0.0.1/source/
+   82  less /var/lib/dkms/dpimod/0.0.1/build/make.log 
+   83  cd ../../src/dpimod-0.0.1/
+   84  ls -l
+   85  sudo -i
+   86  history 
+   87  history > /tmp/hist.astra

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+MODNAME=dpimod
+MODVERSION=0.0.1
+
+sudo dkms add -m $MODNAME -v $MODVERSION || :
+sudo dkms build -j 1 --verbose -m $MODNAME -v $MODVERSION || \
+    sudo dkms build -j 1 --verbose -m $MODNAME -v $MODVERSION #Strange bug in dkms (double build is needed)
+sudo dkms install -m $MODNAME -v $MODVERSION

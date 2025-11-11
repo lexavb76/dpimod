@@ -1,0 +1,7 @@
+Package: dpimod
+Version: 0.0.1-1
+Section: net
+Architecture: all
+Depends: dkms
+Maintainer: Aleksey Babintsev <lexavb76@ya.ru>
+Description: Filter for IPSec packets

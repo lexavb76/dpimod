@@ -6,10 +6,6 @@ SRCDIR := $(PWD)/src
 MAKESRC := $(SRCDIR)/Makefile
 src_m = $(SRCDIR)/$(MODNAME).c
 
-#The directory that contains the kernel sources or relevant build
-KDIR := /lib/modules/$$(KVERSION)/build
-#KDIR := ~/projects/huge_projects/linux
-
 #Module will be installed here:
 INST_MODDIR := /lib/modules/$(KVERSION)
 
@@ -51,6 +47,7 @@ make D=192.168.122.64 stop \# Stop module on remote host (example)\n\
 "
 
 # Dirty HACK for Debug purpose:
+D := astra@192.168.122.206
 # D := 192.168.122.64
 
 ifdef D
@@ -85,12 +82,12 @@ $(MAKESRC): $(src_m)
 	@echo Sources were changed. Remove the module...
 	$(MAKE) cleanall
 	echo '.PHONY: modules clean' > $(MAKESRC)
-	echo 'KVERSION ?= $$(shell uname -r) # For currently working kernel' >> $(MAKESRC)
+	echo 'KDIR ?= $$(shell uname -r)/build # For currently working kernel' >> $(MAKESRC)
 	echo  obj-m += $(MODNAME).o >> $(MAKESRC)
 	echo modules: >> $(MAKESRC)
-	echo '	make -C $(KDIR) M=$(DEST_DKMS_PATH) modules' >> $(MAKESRC)
+	echo '	make -C /lib/modules/$$(KDIR) M=$(DEST_DKMS_PATH) modules' >> $(MAKESRC)
 	echo clean: >> $(MAKESRC)
-	echo '	make -C $(KDIR) M=$(DEST_DKMS_PATH) clean' >> $(MAKESRC)
+	echo '	make -C /lib/modules/$$(KDIR) M=$(DEST_DKMS_PATH) clean' >> $(MAKESRC)
 
 deb-pkg: $(INST_MODPATH)
 $(INST_MODPATH):
@@ -153,6 +150,6 @@ stop:
 #	journalctl --since "1 hour ago" | grep kernel
 
 cleanall: remove
-	rm -rf $(DKMSDIR) || :
-	rm -rf $(DEB_ROOTDIR) || :
-	rm $(MAKESRC) || :
+	# rm -rf $(DKMSDIR) || :
+	# rm -rf $(DEB_ROOTDIR) || :
+	# rm $(MAKESRC) || :
